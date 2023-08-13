@@ -7,6 +7,7 @@ import 'package:task_manager/ui/screens/bottom_nav_base_screen.dart';
 import 'package:task_manager/ui/screens/email_verfication_screen.dart';
 import 'package:task_manager/ui/screens/auth/signup_screen.dart';
 import 'package:task_manager/ui/widgets/screen_background.dart';
+import 'package:task_manager/data/models/auth_utility.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -39,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response.isSuccess) {
       LoginModel model = LoginModel.fromJson(response.body!);
+      await Authutility.saveUserInfo(model);
       if (mounted) {
         Navigator.pushAndRemoveUntil(
             context,
@@ -63,8 +65,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 48,
+              const SizedBox(
+                height: 64,
               ),
               Text(
                 'Get Started With',

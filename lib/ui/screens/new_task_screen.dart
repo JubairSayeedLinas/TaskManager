@@ -13,10 +13,10 @@ class NewTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ScreenBackground(
+      body: SafeArea(
         child: Column(
           children: [
-            UserProfileBanner(),
+            const UserProfileBanner(),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Row(
@@ -24,55 +24,55 @@ class NewTaskScreen extends StatelessWidget {
                   Expanded(
                     child: SummaryCard(
                       title: 'New',
-                      number: 123,
+                      number: 124,
                     ),
                   ),
                   Expanded(
                     child: SummaryCard(
                       title: 'Progress',
-                      number: 123,
+                      number: 124,
                     ),
                   ),
                   Expanded(
                     child: SummaryCard(
                       title: 'Cancelled',
-                      number: 123,
+                      number: 124,
                     ),
                   ),
                   Expanded(
-                      child: SummaryCard(
-                    title: 'Completed',
-                    number: 123,
-                  )
+                    child: SummaryCard(
+                      title: 'Completed',
+                      number: 124,
+                    ),
                   ),
-
                 ],
               ),
             ),
             Expanded(
-                child: ListView.separated(
-                    itemCount: 20,
-                    itemBuilder: (context, index){
-                      return TaskListTIle();
-
-            },separatorBuilder: (BuildContext context, int index){
-                      return const Divider(height: 4,);
-                } ,) ,)
+              child: ListView.separated(
+                itemCount: 20,
+                itemBuilder: (context, index) {
+                  return const TaskListTIle();
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Divider(
+                    height: 4,
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context)=> AddNewsTaskScreen()));
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AddNewTaskScreen()));
         },
       ),
     );
   }
 }
-
-
-
-
-
-
