@@ -1,16 +1,24 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:task_manager/app.dart';
+import 'package:task_manager/data/models/auth_utility.dart';
 import 'package:task_manager/data/models/network_response.dart';
+import 'package:task_manager/ui/screens/auth/login_screen.dart';
 
 class NetworkCaller{
   Future<NetworkResponse> getRequest(String url) async {
     Map<String, dynamic>? decodedResponse;
     try {
-      Response response = await get(Uri.parse(url));
+      Response response = await get(Uri.parse(url), headers : {
+    'token' : Authutility.userInfo.token.toString()
+    });
 
       if (response.statusCode == 200) {
         return NetworkResponse(true, response.statusCode, jsonDecode(response.body));
+      } else if(response.statusCode == 401){
+        gotoLogin();
       }
       else {
         return NetworkResponse(false, response.statusCode, null);
@@ -22,12 +30,19 @@ class NetworkCaller{
     return NetworkResponse(false, -1, null);
   }
 
+  Future<void> gotoLogin() async {
+    await Authutility.clearUserInfo();
+    Navigator.pushAndRemoveUntil(
+        TaskManagerApp.globalKey.currentState!.context,
+        MaterialPageRoute(builder: (context)=> LoginScreen()), (route) => false);
+}
+
   Future<NetworkResponse> postRequest(String url, Map<String, dynamic> body) async {
     Map<String, dynamic>? decodedResponse;
     try {
       Response response = await post(Uri.parse(url),
           headers: {
-        'Content-Type' : 'application/json'
+        'Content-Type' : 'application/json', 'token' : Authutility.userInfo.token.toString()
           },
           body: jsonEncode(body),
       );

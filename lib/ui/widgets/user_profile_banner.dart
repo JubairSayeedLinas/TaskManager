@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/auth_utility.dart';
+import 'package:task_manager/ui/screens/auth/login_screen.dart';
 
 class UserProfileBanner extends StatelessWidget {
   const UserProfileBanner({
@@ -8,14 +10,35 @@ class UserProfileBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0 ),
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
       tileColor: Colors.green,
       leading: CircleAvatar(
-        backgroundImage: NetworkImage('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80'),
+        backgroundImage: NetworkImage(
+          Authutility.userInfo.data?.photo ?? '',
+        ),
+        onBackgroundImageError: (_, __) {
+          const Icon(Icons.image);
+        },
         radius: 15,
       ),
-      title: Text('UserName', style: TextStyle(fontSize: 14, color: Colors.white),),
-      subtitle: Text('Email',style: TextStyle(fontSize: 12,color: Colors.white),),
+      title: Text(
+        '${Authutility.userInfo.data?.firstName ?? ''} ${Authutility.userInfo.data?.lastName ?? ''}',
+        style: const TextStyle(fontSize: 14, color: Colors.white),
+      ),
+      subtitle: Text(
+        Authutility.userInfo.data?.email ?? 'Unknown',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+        ),
+      ),
+      trailing: IconButton(
+        onPressed: (){
+          Authutility.clearUserInfo();
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
+        },
+        icon: Icon(Icons.logout)
+      ),
     );
   }
 }
