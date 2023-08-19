@@ -189,7 +189,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   }
 
   void showStatusUpdateShowBottomSheet(TaskData task){
-    List<String> taskStatusList = ['new', 'progress', 'completed'];
+    List<String> taskStatusList = ['New', 'Progress', 'Completed', 'Cancelled'];
     String _selectedTask = task.status!.toLowerCase();
 
     showModalBottomSheet(
