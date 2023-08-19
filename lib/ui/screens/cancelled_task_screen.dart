@@ -7,7 +7,7 @@ import 'package:task_manager/data/utils/urls.dart';
 import 'package:task_manager/ui/widgets/summary_card.dart';
 import 'package:task_manager/ui/widgets/task_list_tile.dart';
 import 'package:task_manager/ui/widgets/user_profile_banner.dart';
-
+import 'package:task_manager/ui/screens/update_task_status_sheet.dart';
 
 class CancelledTaskScreen extends StatefulWidget {
   const CancelledTaskScreen({Key? key}) : super(key: key);
@@ -67,7 +67,7 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text('get In Progress Data Get Failed'),
+          content: Text('Get Cacelled Task Data Failed'),
         ));
       }
     }
@@ -79,6 +79,23 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
   }
 
 
+  Future<void> deleteTask(String taskId) async {
+    final NetworkResponse response = await NetworkCaller().getRequest(
+        Urls.deleteTask(taskId));
+    if (response.isSuccess) {
+      _taskListModel.data!.removeWhere((element)=> element.sId == taskId);
+      if(mounted){
+        setState(() {
+
+        });
+      }
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(' Delete failed'),));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +135,13 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
                 itemCount: _taskListModel.data?.length ?? 0,
                 itemBuilder: (context, index){
                   return TaskListTile(
-                    data: _taskListModel.data![index], onDeleteTap: () {  }, onEditTap: () {  },
+                    data: _taskListModel.data![index],
+                    onDeleteTap: () {
+                      deleteTask(_taskListModel.data![index].sId!);
+                    },
+                    onEditTap: () {
+                      showStatusUpdateShowBottomSheet(_taskListModel.data![index]);
+                    },
                   );
 
                 },separatorBuilder: (BuildContext context, int index){
@@ -128,6 +151,22 @@ class _CancelledTaskScreenState extends State<CancelledTaskScreen> {
         ),
       ),
     );
+  }
+  void showStatusUpdateShowBottomSheet(TaskData task){
+    List<String> taskStatusList = ['New', 'Progress', 'Completed', 'Cancelled'];
+    String _selectedTask = task.status!.toLowerCase();
+
+    showModalBottomSheet(
+        isScrollControlled: true
+        ,context: context, builder: (context){
+      return StatefulBuilder(
+          builder: (context, updateState) {
+            return UpdateTaskStatusSheet( task: task, onUpdate: (){
+              getCancelledTask;
+            });
+          }
+      );
+    });
   }
 }
 
