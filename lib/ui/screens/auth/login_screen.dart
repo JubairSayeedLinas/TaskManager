@@ -59,85 +59,87 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: ScreenBackground(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 64,
-              ),
-              Text(
-                'Get Started With',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextField(
-                controller: _emailTEController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(hintText: 'Email'),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              TextField(
-                controller: _passwordTEController,
-                obscureText: true,
-                decoration: const InputDecoration(hintText: 'Password'),
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: Visibility(
-                  visible: _loginInProgress == false,
-                  replacement: Center( child: const CircularProgressIndicator()),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        login();
-                      },
-                      child: Icon(Icons.arrow_forward_ios)),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 64,
                 ),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Center(
-                child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => EmailVerificationScreen()));
-                    },
-                    child: Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: Colors.grey),
-                    )),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Have An Account?",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500, letterSpacing: 0.6),
+                Text(
+                  'Get Started With',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: _emailTEController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(hintText: 'Email'),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                TextField(
+                  controller: _passwordTEController,
+                  obscureText: true,
+                  decoration: const InputDecoration(hintText: 'Password'),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: Visibility(
+                    visible: _loginInProgress == false,
+                    replacement: Center( child: const CircularProgressIndicator()),
+                    child: ElevatedButton(
+                        onPressed: () {
+                          login();
+                        },
+                        child: Icon(Icons.arrow_forward_ios)),
                   ),
-                  TextButton(
-                      onPressed: () {
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Center(
+                  child: InkWell(
+                      onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SignUpScreen()));
+                                builder: (context) => EmailVerificationScreen()));
                       },
-                      child: Text('Sign Up'))
-                ],
-              )
-            ],
+                      child: Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: Colors.grey),
+                      )),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Have An Account?",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500, letterSpacing: 0.6),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SignUpScreen()));
+                        },
+                        child: Text('Sign Up'))
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
